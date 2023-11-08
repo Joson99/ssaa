@@ -380,6 +380,9 @@ document.addEventListener('DOMContentLoaded', () => {
     myProfileButton.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent the default behavior of the link
 
+        // Push a new state to the browser's history
+        history.pushState({ page: 'profile' }, 'My Profile', '?profile');
+
         // Hide sections to hide
         sectionsToHide.forEach((section) => {
             section.style.display = 'none';
@@ -389,7 +392,21 @@ document.addEventListener('DOMContentLoaded', () => {
         profileSection.style.display = 'block';
         top.style.display = 'block';
     });
+
+    // Listen for the browser's back/forward navigation
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.page === 'profile') {
+            // The user clicked the back button; restore the previous state
+            sectionsToHide.forEach((section) => {
+                section.style.display = 'block';
+            });
+            profileSection.style.display = 'none';
+            top.style.display = 'none';
+        }
+    });
 });
+
+
 
 
 
